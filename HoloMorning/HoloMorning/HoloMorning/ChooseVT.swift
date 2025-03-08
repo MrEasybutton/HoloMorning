@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ChooseVT: View {
     let onSelected: (Chuuba) -> Void
-    // another etst comment
+    // another etst comment now by CTK
     let columns = [
         GridItem(.fixed(125)),
         GridItem(.fixed(125)),
