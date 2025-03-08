@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 struct AlarmCustomiserView: View {
     let selected: Chuuba
@@ -8,6 +9,8 @@ struct AlarmCustomiserView: View {
     @State private var showSuccessMessage = false
     @State private var isPlaying = false
     
+    @State var sound_dummy = 50.0
+    @State var isEdit = false;
     
     var body: some View {
         VStack(spacing: 16) {
@@ -39,7 +42,7 @@ struct AlarmCustomiserView: View {
                     AudioManager.shared.playSound(selected.voiceClip)
                     isPlaying = true
                 }) {
-                    Image(systemName: "play.circle.fill")
+                    Image(systemName: "eye.circle.fill")
                     .padding()
                     .background(Color.purple)
                     .foregroundColor(.white)
@@ -89,9 +92,13 @@ struct AlarmCustomiserView: View {
             
             Spacer(minLength:72)
             
+            Slider(value: $sound_dummy, in: 0...100, step: 10, onEditingChanged: {editing in isEdit = editing})
+                Text("\(sound_dummy)")
+                        .foregroundColor(isEdit ? .blue : .green)
+                        .bold()
+            
             Button(action: clearSelection) {
                 HStack(alignment: .bottom) {
-                    Image(systemName: "arrow.left")
                     Text("Back to HoloEN")
                 }
                 .padding()
@@ -104,7 +111,6 @@ struct AlarmCustomiserView: View {
         }
         .padding(.bottom)
         .padding(8)
-        .navigationTitle("Customize").offset(y:-20)
         .navigationBarBackButtonHidden(true)
         .background(Color.mint.opacity(0.2))
     }

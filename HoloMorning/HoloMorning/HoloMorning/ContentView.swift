@@ -6,7 +6,6 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            
             if let selected = selected {
                 AlarmCustomiserView(selected: selected, clearSelection: { self.selected = nil })                    .navigationTransition(.zoom(sourceID: "zoom", in: namespace))
             } else {
@@ -17,6 +16,8 @@ struct ContentView: View {
             }
         }
         .onAppear { NotificationManager.shared.requestPermission() }
+        
+        
         
     }
 }
