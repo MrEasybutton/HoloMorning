@@ -7,83 +7,76 @@ struct AlarmCustomiserView: View {
     @State private var alarmTime = Date()
     @State private var showSuccessMessage = false
     @State private var isPlaying = false
-    // comment test
+    
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
             Image(selected.imageName)
                 .resizable()
                 .scaledToFit()
-                .frame(height: 150)
-                .cornerRadius(15)
-                .shadow(radius: 3)
+                .frame(height: 240)
+                .cornerRadius(18)
+                .shadow(radius: 4)
                 .padding(.top)
             
             Text(selected.name)
                 .font(.title)
                 .fontWeight(.bold)
+                .fontDesign(.rounded)
             
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 4)
             
-            DatePicker("Set the alarm time", selection: $alarmTime, displayedComponents: .hourAndMinute)
-                .padding()
+            DatePicker("Set Alarm", selection: $alarmTime, displayedComponents: .hourAndMinute)
+                .padding(12)
                 .background(Color(.systemGray6))
-                .cornerRadius(12)
-                .padding(.horizontal)
+                .cornerRadius(8)
+                .buttonStyle(.bordered)
+                .shadow(radius: 4)
+                
             
             HStack {
                 Button(action: {
                     AudioManager.shared.playSound(selected.voiceClip)
                     isPlaying = true
                 }) {
-                    HStack {
-                        Image(systemName: "play.circle.fill")
-                        Text("Preview")
-                    }
+                    Image(systemName: "play.circle.fill")
                     .padding()
-                    .frame(maxWidth: .infinity)
                     .background(Color.purple)
                     .foregroundColor(.white)
                     .cornerRadius(8)
-                    .padding(.horizontal)
                 }
                 
                 Button(action: {
                     AudioManager.shared.stopSound()
                     isPlaying = false
                 }) {
-                    HStack {
-                        Image(systemName: "stop.circle.fill")
-                        Text("Stop")
-                    }
+                    Image(systemName: "stop.circle.fill")
                     .padding()
-                    .frame(maxWidth: .infinity)
                     .background(Color.red)
                     .foregroundColor(.white)
                     .cornerRadius(8)
-                    .padding(.horizontal)
                 }
-            }
-            
-            Button(action: {
-                NotificationManager.shared.scheduleAlarm(for: alarmTime, with: selected)
-                showSuccessMessage = true
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    showSuccessMessage = false
+                Button(action: {
+                    NotificationManager.shared.scheduleAlarm(for: alarmTime, with: selected)
+                    showSuccessMessage = true
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        showSuccessMessage = false
+                    }
+                }) {
+                    HStack {
+                        Image(systemName: "alarm.fill")
+                        Text("CONFIRM").fontDesign(.rounded)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: 20)
+                    .padding()
+                    .background(Color.green)
+                    .background(.thickMaterial)
+                    .foregroundColor(.white).shadow(radius: 12)
+                    .cornerRadius(12)
                 }
-            }) {
-                HStack {
-                    Image(systemName: "alarm.fill")
-                    Text("Confirm")
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.green)
-                .foregroundColor(.white)
-                .cornerRadius(12)
-                .padding(.horizontal)
-            }
+            }.contentMargins(20)
             
             if showSuccessMessage {
                 Text("\(selected.name) set your alarm.")
@@ -94,10 +87,10 @@ struct AlarmCustomiserView: View {
                     .cornerRadius(8)
             }
             
-            Spacer()
+            Spacer(minLength:72)
             
             Button(action: clearSelection) {
-                HStack {
+                HStack(alignment: .bottom) {
                     Image(systemName: "arrow.left")
                     Text("Back to HoloEN")
                 }
@@ -105,12 +98,14 @@ struct AlarmCustomiserView: View {
                 .frame(maxWidth: .infinity)
                 .background(Color.yellow.opacity(0.8))
                 .foregroundColor(.primary)
-                .cornerRadius(16)
+                .cornerRadius(8)
                 .padding(.horizontal)
             }
         }
         .padding(.bottom)
-        .navigationTitle("Customize")
+        .padding(8)
+        .navigationTitle("Customize").offset(y:-20)
         .navigationBarBackButtonHidden(true)
+        .background(Color.mint.opacity(0.2))
     }
 }
