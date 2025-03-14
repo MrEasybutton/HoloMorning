@@ -4,7 +4,7 @@ import SwiftUI
 struct HoloMorningApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabbedContentView()
         }
     }
 }
